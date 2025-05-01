@@ -1,0 +1,35 @@
+name: Full Deploy to Production
+
+on:
+  push:
+    branches: [ main ]
+
+env:
+  COMPOSE_PROJECT_NAME: turing-lab-imposters
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Create .env file
+        run: |
+          cat << EOF > .env
+          MONGODB_URI=${{ secrets.MONGODB_URI }}
+          NODE_ENV=production
+          EOF
+        shell: bash
+
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            cd /opt/imposters
+            docker-compose down
+            docker-compose up -d --build
