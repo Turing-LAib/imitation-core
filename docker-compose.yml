@@ -1,0 +1,42 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      MONGODB_URI: "mongodb://mongo_user:${MONGO_PASSWORD}@mongo:27017/imposters?authSource=admin"
+      OPENAI_URL: ${OPENAI_URL}
+      OPENAI_API_KEY: ${OPENAI_API_KEY}
+    ports:
+      - "3000:3000"
+    depends_on:
+      mongo:
+        condition: service_healthy
+    networks:
+      - app-net
+    # only for dev
+    # volumes:
+    #   - ./:/app
+    #   - /app/node_modules
+
+  mongo:
+    image: mongo:6.0
+    command: ["--quiet", "--syslog"]
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: mongo_user
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD}
+    volumes:
+      - mongo-data:/data/db
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 5s
+      timeout: 10s
+      retries: 5
+    networks:
+      - app-net
+
+volumes:
+  mongo-data:
+
+networks:
+  app-net:
