@@ -7,16 +7,22 @@ services:
       MONGODB_URI: "mongodb://mongo_user:${MONGO_PASSWORD}@mongo:27017/imposters?authSource=admin"
       OPENAI_URL: ${OPENAI_URL}
       OPENAI_API_KEY: ${OPENAI_API_KEY}
+      OPENAI_API_KEY2: ${OPENAI_API_KEY2}
+      OPENAI_API_KEY3: ${OPENAI_API_KEY3}
+      OPENAI_URL4: ${OPENAI_URL4}
+      OPENAI_API_KEY4: ${OPENAI_API_KEY4}
+      OPENAI_URL5: ${OPENAI_URL5}
+      OPENAI_API_KEY5: ${OPENAI_API_KEY5}
     ports:
-      - "3000:3000"
+      - "80:3000"
     depends_on:
       mongo:
         condition: service_healthy
     networks:
       - app-net
     # only for dev
-    # volumes:
-    #   - ./:/app
+    volumes:
+      - /data/public:/app/data/public
     #   - /app/node_modules
 
   mongo:
