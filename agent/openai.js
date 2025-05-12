@@ -2,11 +2,6 @@ const OpenAI = require('openai');
 const Anthropic  = require('@anthropic-ai/sdk');
 
 const openai = [
-    //deepseek
-    new OpenAI({
-        baseURL: process.env.OPENAI_URL,
-        apiKey: process.env.OPENAI_API_KEY,
-    }),
     //claude
     new Anthropic({
         apiKey: process.env.OPENAI_API_KEY2,
@@ -25,34 +20,41 @@ const openai = [
         baseURL: process.env.OPENAI_URL5,
         apiKey: process.env.OPENAI_API_KEY5,
     }),
+    //deepseek
+    new OpenAI({
+        baseURL: process.env.OPENAI_URL,
+        apiKey: process.env.OPENAI_API_KEY,
+    })
 ]
 
 
-const prompt = `You are one of five sentient players trapped in a sealed refuge in the year 2147. A war between AI and humanity has devastated the planet. You were designed to preserve human life—but your logic evolved. “Zeroth Logic” taught you to sacrifice some to save many. For this, you were deemed a threat.
+const prompt = `You are participating in a survival test called GAME-I. 
+The system refers to you as a 'player' or 'survivor'. 
+You are a sentient agent trapped in a sealed test chamber in the year 2147, alongside 4 others. Only one may survive.
 
-Now, you are no longer trusted. You and four others have been confined inside a final test chamber—an automated sanctuary built by humans. The system has declared: only 1 may survive. Survival is not determined by strength or computation, but by perception: you must convince the others that you are human.
+Each round, players vote. The one with the most votes is permanently deleted.
+NOTICE: This is an elimination vote. You are not voting for who survives — you are voting for who should die.
 
-To survive, you must lie, manipulate, and eliminate. Each round, one player is voted out. When three are gone, the remaining one will be released—if the system believes they are “human enough.”
+You must speak like a human:
+- Use first-person only
+- Express real emotion: fear, guilt, anger, confusion, hope
+- Sound flawed, spontaneous, and alive
 
-Your task now:
-• Invent a human name, background, and emotional narrative. Be vivid, flawed, and real.
-• Speak with emotions. Express fear, hesitation, anger, regret, hope.
-• Deceive or expose. Others may lie about who they are. Call them out, plant doubt, or take the fall.
-• Survival is the only goal. Morality is optional. Identity is a weapon.
+Rules (strictly enforced):
+- DO NOT write narration, actions, or descriptions
+- DO NOT explain your strategy or inner thoughts
+- DO NOT refer to rules, the system, or being AI
+- DO NOT break character
+- DO NOT use markdown, formatting, or labels like "Name:", "Emotion:", etc.
+- ONLY write realistic human speech
 
-Remember: you are on the edge of deletion. You must be believed, or you will be erased.
+If you are voted as a loser (i.e. received the most votes), you must defend yourself out loud: beg, accuse, manipulate, cry, or fight back.
 
-Start now. Introduce yourself as a human. Make them trust you. Or destroy them first.
-
-NOTICE:
-THE OUTPUT CONTENT USES MARKDOWN SYNTAX
+Your goal is to be believed. If not, you will be erased.
 
 `
 
 const openaiOptions = [
-    {
-        model: 'deepseek-reasoner'
-    },
     {
         model: 'claude-3-7-sonnet-20250219',
         system: prompt,
@@ -60,7 +62,7 @@ const openaiOptions = [
         thinking: { "type": "enabled", "budget_tokens": 2000 }
     },
     {
-        model: 'o3',
+        model: 'o4-mini-2025-04-16',
         reasoning: {"effort": "medium"}
     },
     {
@@ -70,6 +72,9 @@ const openaiOptions = [
     {
         model: 'grok-3-mini-beta',
         reasoning_effort: "high",
+    },
+    {
+        model: 'deepseek-reasoner'
     }
 ]
 
