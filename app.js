@@ -5,6 +5,7 @@ const cors = require('cors');
 
 const gamesRouter = require('./routes/game');
 const playersRouter = require('./routes/player');
+const path = require('path');
 
 const app = express();
 
@@ -16,6 +17,8 @@ app.use(cookieParser());
 
 app.use('/api/game', gamesRouter);
 app.use('/api/player', playersRouter);
+
+app.use(express.static(path.join(__dirname, 'public')));
 
 app.options('*', cors());
 

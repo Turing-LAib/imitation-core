@@ -36,7 +36,7 @@ router.get('/chat', async function(req, res) {
     let game = await db.findOne('games', {_id: Number(req.query.gid)});
     if (game) {
         let phrase = Number(req.query.phrase) === 5 ? 4 : Number(req.query.phrase)
-        let chat = await db.find('gameChat', {gameId: Number(req.query.gid), phrase: phrase});
+        let chat = await db.find('gameChat', {gameId: Number(req.query.gid)});
         res.json(chat);
     }else{
         res.json({});
@@ -74,6 +74,7 @@ router.get('/:id', async function(req, res) {
     let game = await db.findOne('games', {_id: 1});
     res.json(game);
 });
+
 
 
 
